@@ -25,6 +25,9 @@
 /* Begin PBXFileReference section */
 		45093B391C8C0839003F14E6 /* Project4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project4; sourceTree = BUILT_PRODUCTS_DIR; };
 		45093B3C1C8C0839003F14E6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		45093B431C8C0907003F14E6 /* BinaryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryFile.h; sourceTree = "<group>"; };
+		45093B441C8C0961003F14E6 /* DiskMultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiskMultiMap.h; sourceTree = "<group>"; };
+		45093B451C8C09A0003F14E6 /* MultiMapTuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiMapTuple.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				45093B3C1C8C0839003F14E6 /* main.cpp */,
+				45093B431C8C0907003F14E6 /* BinaryFile.h */,
+				45093B441C8C0961003F14E6 /* DiskMultiMap.h */,
+				45093B451C8C09A0003F14E6 /* MultiMapTuple.h */,
 			);
 			path = Project4;
 			sourceTree = "<group>";
