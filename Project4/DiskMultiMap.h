@@ -3,6 +3,7 @@
 
 #include <string>
 #include "MultiMapTuple.h"
+#include "BinaryFile.h"
 
 class DiskMultiMap
 {
@@ -32,6 +33,11 @@ public:
     
 private:
     // Your private member declarations will go here
+    void increaseOffset(long t){offset+=t;}
+    BinaryFile::Offset getOffset(){return offset;}
+    void setOffset(BinaryFile::Offset t){offset=t;}
+    BinaryFile bin;
+    BinaryFile::Offset offset;
 };
 
 #endif // DISKMULTIMAP_H_

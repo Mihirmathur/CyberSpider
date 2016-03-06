@@ -5,7 +5,9 @@
 
 
 #include <iostream>
+#include "DiskMultiMap.h"
 
 int main(){
-    
+        DiskMultiMap x;
+        x.createNew("myhashtable.dat",100);
 }
