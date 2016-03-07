@@ -30,6 +30,8 @@
 		45093B441C8C0961003F14E6 /* DiskMultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiskMultiMap.h; sourceTree = "<group>"; };
 		45093B451C8C09A0003F14E6 /* MultiMapTuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiMapTuple.h; sourceTree = "<group>"; };
 		45093B461C8C0BA9003F14E6 /* DiskMultiMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiskMultiMap.cpp; sourceTree = "<group>"; };
+		45093B481C8DFCBD003F14E6 /* IntelWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelWeb.h; sourceTree = "<group>"; };
+		45093B491C8DFDE3003F14E6 /* InteractionTuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionTuple.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,8 @@
 				45093B431C8C0907003F14E6 /* BinaryFile.h */,
 				45093B441C8C0961003F14E6 /* DiskMultiMap.h */,
 				45093B461C8C0BA9003F14E6 /* DiskMultiMap.cpp */,
+				45093B481C8DFCBD003F14E6 /* IntelWeb.h */,
+				45093B491C8DFDE3003F14E6 /* InteractionTuple.h */,
 				45093B451C8C09A0003F14E6 /* MultiMapTuple.h */,
 			);
 			path = Project4;
