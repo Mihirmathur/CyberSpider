@@ -25,16 +25,26 @@ public:
         }
         
         bool isValid() const{return state;};
+        
         Iterator& operator++(){
             if (!isValid()) {
                 return *this;
             }
             BinaryFile *b=&(m_diskptr->bin);
             b->read(m_diskptr->N, o);
+            
             if (m_diskptr->N.offNext==-1) {
                 state=0;
             }
-            else setO(m_diskptr->N.offNext);
+            else {
+                b->read(m_diskptr->M, m_diskptr->N.offNext);
+                char temp_key[121];
+                strcpy(temp_key, m_diskptr->N.key);
+                if (m_diskptr->M.deleted==true || strcmp(m_diskptr->M.key, temp_key)!=0) {
+                    state = 0;
+                }
+                else setO(m_diskptr->N.offNext);
+            }
             
             return *this;
         };
@@ -80,16 +90,18 @@ private:
     // Your private member declarations will go here
     struct Node{
         //MultiMapTuple map;
-        Node(){}
+        Node(){deleted = false;}
         Node (const char k[], const char v[], const char c[]){
             strcpy(key, k);
             strcpy(value, v);
             strcpy(context, c);
+            deleted = false;
         }
         char key[121];
         char value[121];
         char context[121];
         BinaryFile::Offset offNext;
+        bool deleted;
     };
     void increaseOffset(long t){offset+=t;}
     BinaryFile::Offset getOffset(){return offset;}
@@ -97,7 +109,7 @@ private:
     BinaryFile bin;
     BinaryFile::Offset offset; //Points to the end of file. Used for writing new things. 
     BinaryFile::Offset head_offset;//Points to the start of the nodes.
-    Node N;
+    Node N, M; // Nodes for working.
     int NUM_BUCKETS;
 };
 

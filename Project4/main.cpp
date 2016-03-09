@@ -11,9 +11,11 @@ int main(){
         DiskMultiMap x;
         x.createNew("myhashtable.dat",100);
     x.insert("hmm.exe", "pfft.exe", "m52902");
+    x.insert("hmm.exe", "pfft.exe", "m52902");
     x.insert("hmm.exe", "pfft.exe", "m10001");
     x.insert("hmm.exe", "pas.exe", "m10601");
     x.insert("blah.exe", "bletch.exe", "m0003");
+    x.erase("hmm.exe", "pas.exe", "m10601");
     DiskMultiMap::Iterator it=x.search("blah.exe");
     while(it.isValid()){
         MultiMapTuple m=*it;

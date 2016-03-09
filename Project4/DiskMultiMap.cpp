@@ -20,6 +20,8 @@ bool DiskMultiMap::createNew(const std::string &filename, unsigned int numBucket
     bin.write(numBuckets, offset);
     NUM_BUCKETS=numBuckets;
     increaseOffset(sizeof(int));
+    bin.write(-100, offset);
+    increaseOffset(sizeof(int));
     for (int i=0; i<numBuckets; i++) {
         bin.write(0, offset);
         increaseOffset(sizeof(i));
@@ -49,12 +51,12 @@ bool DiskMultiMap::insert(const std::string& key, const std::string& value, cons
     unsigned int bucket = hashValue % NUM_BUCKETS;
     n.offNext=-1;
     int t;
-    bin.read(t, bucket+4);
+    bin.read(t, bucket+8);
     
     //If no node has been inserted into bucket, write the offset of node that
     //will be inserted into the bucket. (Bucket+4 because first 4 bytes contain NUM_BUCKETS)
     if (t==0) {
-        bin.write(getOffset(), bucket+4);
+        bin.write(getOffset(), bucket+8);
     }
     //t!=0 implies that a node with that hash value is already stored at location 't'
     //So the offNext of that node has to be updated.
@@ -83,32 +85,59 @@ DiskMultiMap::Iterator DiskMultiMap::search(const std::string& key){
     std::hash<std::string> str_hash; // creates a string hasher.
     unsigned int hashValue = str_hash(key); // now hash the string.
     unsigned int bucket = hashValue % NUM_BUCKETS;
-    int t;
+    int t,o, p;
     Node temp;
-    bin.read(t, bucket+4);
+    bin.read(t, bucket+8);
+    o=t;
+    p=t;
     if(t!=0) {
         bin.read(temp, t);
         while(1){
-            if (strcmp(temp.key, key.c_str())==0) {
-                DiskMultiMap::Iterator it(1, t, this);
+            if (strcmp(temp.key, key.c_str())==0 && temp.deleted==false) {
+                DiskMultiMap::Iterator it(1, p, this);
                 return it;
             }
             if (temp.offNext==-1) {
                 break;
             }
             else{
+                p=temp.offNext;
                 bin.read(temp, temp.offNext);
+                o=temp.offNext;
             }
         }
         
-//        do{
-//            cout<<temp.key<<" "<<temp.value<<" "<<temp.context<<endl;
-//            bin.read(temp, temp.offNext);
-//        }while (temp.offNext!=-1);
     }
    
     DiskMultiMap::Iterator it(0, -1, this);
     return it;
+}
+
+int DiskMultiMap::erase(const std::string& key, const std::string& value, const std::string& context){
+    std::hash<std::string> str_hash; // creates a string hasher.
+    unsigned int hashValue = str_hash(key); // now hash the string.
+    unsigned int bucket = hashValue % NUM_BUCKETS;
+    Node temp;
+    int count =0;
+    BinaryFile::Offset t, o;
+    bin.read(t, bucket+8);
+    if (t==0)
+        return 0;
+    bin.read(temp, t);
+    o=t;
+    do{
+        if (temp.key==key && temp.value==value && temp.context==context && temp.deleted==false) {
+            count++;
+            temp.deleted=true;
+            bin.write(temp, o);
+        }
+        o=temp.offNext;
+        if (o!=-1) {
+           bin.read(temp, o);
+        }
+    }while(o!=-1);
+    return count;
+    
 }
 /*
 class DiskList
