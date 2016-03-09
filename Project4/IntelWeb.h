@@ -2,13 +2,14 @@
 #define INTELWEB_H_
 
 #include "InteractionTuple.h"
+#include "DiskMultiMap.h"
 #include <string>
 #include <vector>
 
 class IntelWeb
 {
 public:
-    IntelWeb();
+    IntelWeb():m_diskMap(){};
     ~IntelWeb();
     bool createNew(const std::string& filePrefix, unsigned int maxDataItems);
     bool openExisting(const std::string& filePrefix);
@@ -23,6 +24,7 @@ public:
     
 private:
     // Your private member declarations will go here
+    DiskMultiMap m_diskMap;
 };
 
 #endif // INTELWEB_H_

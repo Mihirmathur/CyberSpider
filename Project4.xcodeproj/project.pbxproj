@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4505055E1C8FC3520021A678 /* IntelWeb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4505055D1C8FC3520021A678 /* IntelWeb.cpp */; settings = {ASSET_TAGS = (); }; };
 		45093B3D1C8C0839003F14E6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45093B3C1C8C0839003F14E6 /* main.cpp */; };
 		45093B471C8C0BA9003F14E6 /* DiskMultiMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45093B461C8C0BA9003F14E6 /* DiskMultiMap.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4505055D1C8FC3520021A678 /* IntelWeb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntelWeb.cpp; sourceTree = "<group>"; };
 		45093B391C8C0839003F14E6 /* Project4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project4; sourceTree = BUILT_PRODUCTS_DIR; };
 		45093B3C1C8C0839003F14E6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		45093B431C8C0907003F14E6 /* BinaryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryFile.h; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				45093B431C8C0907003F14E6 /* BinaryFile.h */,
 				45093B441C8C0961003F14E6 /* DiskMultiMap.h */,
 				45093B461C8C0BA9003F14E6 /* DiskMultiMap.cpp */,
+				4505055D1C8FC3520021A678 /* IntelWeb.cpp */,
 				45093B481C8DFCBD003F14E6 /* IntelWeb.h */,
 				45093B491C8DFDE3003F14E6 /* InteractionTuple.h */,
 				45093B451C8C09A0003F14E6 /* MultiMapTuple.h */,
@@ -132,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45093B3D1C8C0839003F14E6 /* main.cpp in Sources */,
+				4505055E1C8FC3520021A678 /* IntelWeb.cpp in Sources */,
 				45093B471C8C0BA9003F14E6 /* DiskMultiMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +253,7 @@
 				45093B421C8C0839003F14E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
