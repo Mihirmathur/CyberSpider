@@ -9,6 +9,8 @@
 #include "MultiMapTuple.h"
 #include "IntelWeb.h"
 #include <string>
+#include <vector>
+#include "InteractionTuple.h"
 int main(){
 //        DiskMultiMap x;
 //        x.createNew("myhashtable.dat",100);
@@ -24,9 +26,22 @@ int main(){
 //        cout<<m.key<<" "<<m.value<<" "<<m.context<<" "<<endl;
 //        ++it;
 //    }
+    std::vector<std::string> indicators;
+    unsigned int minPrevalenceToBeGood;
+    std::vector<std::string> badEntitiesFound;
+    std::vector<InteractionTuple> badInteractions;
+    indicators.push_back("qqqqqa.exe");
+    indicators.push_back("explorer.exe");
     
     IntelWeb i;
     i.createNew("my", 1000);
     i.ingest("telemetry.txt");
+    i.crawl(indicators, 0, badEntitiesFound, badInteractions);
+    
+    InteractionTuple tup;
+    for (int i=0; i<badInteractions.size(); i++) {
+        tup=badInteractions[i];
+        cerr<<tup.from<<" "<<tup.to<<" "<<tup.context<<endl;
+    }
     
 }

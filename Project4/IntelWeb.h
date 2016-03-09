@@ -25,6 +25,7 @@ public:
 private:
     // Your private member declarations will go here
     DiskMultiMap m_diskMap;
+    string file_name;
 };
 
 #endif // INTELWEB_H_
