@@ -50,7 +50,7 @@ bool DiskMultiMap::insert(const std::string& key, const std::string& value, cons
     unsigned int hashValue = str_hash(n.key); // now hash the string.
     unsigned int bucket = hashValue % NUM_BUCKETS;
     n.offNext=-1;
-    int t;
+    BinaryFile::Offset t;
     bin.read(t, bucket+8);
     
     //If no node has been inserted into bucket, write the offset of node that
@@ -85,7 +85,7 @@ DiskMultiMap::Iterator DiskMultiMap::search(const std::string& key){
     std::hash<std::string> str_hash; // creates a string hasher.
     unsigned int hashValue = str_hash(key); // now hash the string.
     unsigned int bucket = hashValue % NUM_BUCKETS;
-    int t,o, p;
+    BinaryFile::Offset t,o, p;
     Node temp;
     bin.read(t, bucket+8);
     o=t;

@@ -9,7 +9,7 @@
 class IntelWeb
 {
 public:
-    IntelWeb():m_diskMap(){};
+    IntelWeb():m_diskMap(), m_diskMap2(){};
     ~IntelWeb();
     bool createNew(const std::string& filePrefix, unsigned int maxDataItems);
     bool openExisting(const std::string& filePrefix);
@@ -25,7 +25,11 @@ public:
 private:
     // Your private member declarations will go here
     DiskMultiMap m_diskMap;
-    string file_name;
+    
+    //Map2: For target searching
+    DiskMultiMap m_diskMap2;
+    string file_name1;
+    string file_name2;
 };
 
 #endif // INTELWEB_H_
