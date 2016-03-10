@@ -28,6 +28,7 @@ private:
     
     //Map2: For target searching
     DiskMultiMap m_diskMap2;
+    string file_prefix;
     string file_name1;
     string file_name2;
 };

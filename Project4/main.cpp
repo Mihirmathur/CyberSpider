@@ -42,7 +42,7 @@ int main(){
     InteractionTuple tup;
     for (int i=0; i<badInteractions.size(); i++) {
         tup=badInteractions[i];
-        cerr<<tup.from<<" "<<tup.to<<" "<<tup.context<<endl;
+        cerr<<tup.context<<" "<<tup.from<<" "<<tup.to<<" "<<endl;
     }
     for (int i=0; i<badEntitiesFound.size(); i++) {
         cerr<<badEntitiesFound[i]<<endl;
