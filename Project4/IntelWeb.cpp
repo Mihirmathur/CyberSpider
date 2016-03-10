@@ -15,6 +15,7 @@
 #include <sstream>
 #include <algorithm>
 #include <set>
+#include <map>
 using namespace std;
 
 //Helper functions for comparing Tuples
@@ -138,6 +139,8 @@ unsigned int IntelWeb::crawl(
     vector<string> indicators_ext=indicators;
     DiskMultiMap::Iterator it, iter, iter_2;
     set<std::string> mal_entity;
+    set<std::string> prevalence_below;
+    set<std::string> prevalence_above;
     for (int i=0; i<indicators_ext.size(); i++) {
         
         //Searching in first Map (If indicator is an initiator)
@@ -173,6 +176,7 @@ unsigned int IntelWeb::crawl(
                 }
                 
                 if (count<minPrevalenceToBeGood) {
+                    prevalence_below.insert(tuple.to);
                     num_mal++;
                     mal_entity.insert(tuple.to);
                     indicators_ext.push_back(tuple.to);
@@ -237,30 +241,39 @@ unsigned int IntelWeb::crawl(
 
 
 bool IntelWeb::purge(const std::string& entity){
-    DiskMultiMap::Iterator it;
+    DiskMultiMap::Iterator it, iter;
     it=m_diskMap.search(entity);
     MultiMapTuple m;
-    
+    int t=0;
     bool purged=false;
-    
+
+here:
     while (it.isValid()) {
         m=*it;
-        m_diskMap.erase(entity, m.value, m.context);
-        m_diskMap2.erase(m.value, entity, m.context);
+        t+=m_diskMap.erase(entity, m.value, m.context);
+        t+=m_diskMap2.erase(m.value, entity, m.context);
         ++it;
         purged=true;
     }
     
-    it=m_diskMap2.search(entity);
+    iter=m_diskMap2.search(entity);
     
-    while (it.isValid()) {
-        m=*it;
-        m_diskMap2.erase(entity, m.value, m.context);
-        m_diskMap2.erase(m.value, entity, m.context);
-        ++it;
+    while (iter.isValid()) {
+        m=*iter;
+        t+=m_diskMap2.erase(entity, m.value, m.context);
+        t+=m_diskMap.erase(m.value, entity, m.context);
+        ++iter;
         purged=true;
     }
     
+    it=m_diskMap.search(entity);
+    iter=m_diskMap2.search(entity);
+    if (it.isValid() || iter.isValid()) {
+        //cerr<<"Something's Wrong."<<endl;
+        goto here;
+    }
+    
+    cerr<<"Lines erased: "<<t<<endl;
     return purged;
     
     

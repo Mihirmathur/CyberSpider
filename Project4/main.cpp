@@ -23,17 +23,25 @@ int main(){
 //    x.insert( "qqqqqf.exe", "http://www.boo.edu/abc", "m2");
 //    x.insert( "http://www.boo.edu/abc", "qqqqqg.exe", "m3");
 //    x.insert( "qqqqqg.exe", "qqqqqh.exe", "m3");
+//    x.insert( "explorer.exe", "g2.exe", "m4");
 //    x.insert( "explorer.exe", "qqqqqa.exe", "m3");
 //    x.insert( "explorer.exe", "g1.exe", "m4");
 //    x.insert( "explorer.exe", "g2.exe", "m4");
-//    x.insert( "explorer.exe", "g3.exe", "m5");
+//    x.insert( "explorer.exe", "g2.exe", "m4");;
 //    x.insert( "explorer.exe", "g4.exe", "m5");
 //    x.insert( "explorer.exe", "g5.exe", "m6");
 //    x.insert( "explorer.exe", "g6.exe", "m6");
+//    
 //    x.insert( "firefox.exe", "http://google.com", "m7");
 //    x.insert( "firefox.exe", "http://google.com", "m7");
-//    x.insert( "explorer.exe", "http://google.com", "m8");
-//    x.insert( "explorer.exe", "http://google.com", "m8");
+//    x.insert( "explorer.exe", "http://google.com", "m7");
+//    x.insert( "explorer.exe", "http://google.com", "m7");
+//    x.insert( "explorer.exe", "http://google.com", "m7");
+//    x.insert( "explorer.exe", "g2.exe", "m4");
+//    x.insert( "explorer.exe", "g2.exe", "m4");
+//    x.insert( "explorer.exe", "g2.exe", "m4");
+//    int t=x.erase("explorer.exe", "g2.exe", "m4");
+//    cerr<<t<<endl;
 //    DiskMultiMap::Iterator it=x.search("explorer.exe");
 //    while(it.isValid()){
 //        MultiMapTuple m=*it;
@@ -46,21 +54,23 @@ int main(){
     unsigned int minPrevalenceToBeGood;
     std::vector<std::string> badEntitiesFound;
     std::vector<InteractionTuple> badInteractions;
-    //indicators.push_back("http://www.foo.com/bar");
-    indicators.push_back("oj.exe");
+    indicators.push_back("qqqqqa.exe");
+    indicators.push_back("sbv.exe");
     
     IntelWeb i;
-    i.createNew("myo", 100); //Doesn't work for 1000 and foobar.
+    i.createNew("myo", 80000); //Doesn't work for 1000 and foobar.
     i.ingest("output.txt");
-    int k=i.crawl(indicators, 100, badEntitiesFound, badInteractions);
-    cerr<<k<<endl;
-    InteractionTuple tup;
-    for (int i=0; i<badInteractions.size(); i++) {
-        tup=badInteractions[i];
-        cerr<<tup.context<<" "<<tup.from<<" "<<tup.to<<" "<<endl;
-    }
-    for (int i=0; i<badEntitiesFound.size(); i++) {
-        cerr<<badEntitiesFound[i]<<endl;
-    }
+    cerr<<"Completed Ingest.\n";
+    i.purge("a.exe");
+//    int k=i.crawl(indicators, 4, badEntitiesFound, badInteractions);
+//    cerr<<"Malicious Entities: "<<k<<endl;
+//    InteractionTuple tup;
+//    for (int i=0; i<badInteractions.size(); i++) {
+//        tup=badInteractions[i];
+//        cerr<<tup.context<<" "<<tup.from<<" "<<tup.to<<" "<<endl;
+//    }
+//    for (int i=0; i<badEntitiesFound.size(); i++) {
+//        cerr<<badEntitiesFound[i]<<endl;
+//    }
   i.close();
 }

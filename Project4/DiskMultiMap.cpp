@@ -135,10 +135,12 @@ DiskMultiMap::Iterator DiskMultiMap::search(const std::string& key){
 }
 
 int DiskMultiMap::erase(const std::string& key, const std::string& value, const std::string& context){
+    
     std::hash<std::string> str_hash; // creates a string hasher.
     unsigned int hashValue = str_hash(key); // now hash the string.
     unsigned int bucket = hashValue % NUM_BUCKETS;
-    Node temp;
+    
+    Node temp, tempNext;
     int count =0;
     BinaryFile::Offset t, o;
     bin.read(t, sizeof(BinaryFile::Offset)*bucket+8);
@@ -146,17 +148,78 @@ int DiskMultiMap::erase(const std::string& key, const std::string& value, const 
         return 0;
     bin.read(temp, t);
     o=t;
-    do{
-        if (temp.key==key && temp.value==value && temp.context==context && temp.deleted==false) {
-            count++;
+    
+    if (temp.offNext==-1) {
+        if (temp.key==key && temp.value==value && temp.context==context && temp.deleted==false){
             temp.deleted=true;
-            bin.write(temp, o);
+            count++;
+            bin.write(temp, t);
+            bin.write(0, sizeof(BinaryFile::Offset)*bucket+8);
+        }
+        return count;
+    }
+    
+    else{
+        if (temp.key==key && temp.value==value && temp.context==context && temp.deleted==false){
+            temp.deleted=true;
+            count++;
+            bin.write(temp, t);
+            bin.write(temp.offNext, sizeof(BinaryFile::Offset)*bucket+8);
+        }
+    }
+    
+    do{
+        bin.read(tempNext, temp.offNext);
+        if (tempNext.key==key && tempNext.value==value && tempNext.context==context && tempNext.deleted==false) {
+            tempNext.deleted=true;
+            count++;
+            bin.write(tempNext, temp.offNext);
+            if (temp.deleted==false) {
+                temp.offNext=tempNext.offNext;
+                bin.write(temp, o);
+            }
+            else{
+                //bin.write(temp.offNext, sizeof(BinaryFile::Offset)*bucket+8);
+            }
         }
         o=temp.offNext;
-        if (o!=-1) {
-           bin.read(temp, o);
+        temp=tempNext;
+        
+    }while(temp.offNext!=-1);
+   
+    bool doit;
+    do{
+        doit=false;
+    bin.read(t, sizeof(BinaryFile::Offset)*bucket+8);
+    
+    if(t==0)return count;
+    bin.read(temp, t);
+    o=t;
+    while (temp.offNext!=-1) {
+        bin.read(tempNext, temp.offNext);
+        if (tempNext.deleted==true) {
+            temp.offNext=tempNext.offNext;
+            bin.write(temp, o);
+            doit=true;
         }
-    }while(o!=-1);
+        o=temp.offNext;
+        temp=tempNext;
+    }
+    }while (doit==true);
+    
+//    else{
+//    do{
+//        if (temp.key==key && temp.value==value && temp.context==context && temp.deleted==false) {
+//            count++;
+//            temp.deleted=true;
+//            bin.write(temp, o);
+//        }
+//        o=temp.offNext;
+//        if (o!=-1) {
+//           bin.read(temp, o);
+//        }
+//    }while(o!=-1);
+//    }
     return count;
     
 }
