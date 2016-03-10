@@ -13,19 +13,35 @@ DiskMultiMap::~DiskMultiMap(){
     bin.close();
 }
 
+void DiskMultiMap::Display(){
+    BinaryFile::Offset q,j, off=8;
+    cerr<<endl;
+    for (j=0; j<NUM_BUCKETS; j++) {
+        bin.read(q, off);
+        off+=sizeof(BinaryFile::Offset);
+        cerr<<q<<" ";
+    }
+}
+
 bool DiskMultiMap::createNew(const std::string &filename, unsigned int numBuckets){
     bin.close();
     bool suc = bin.createNew(filename);
     if(!suc)return 0;
+    
+    //First 4 bytes contain number of buckets.
     bin.write(numBuckets, offset);
     NUM_BUCKETS=numBuckets;
     increaseOffset(sizeof(int));
+    
+    //Next 4 bytes contain offset of first deleted node => initialized to -100 (arbitrary value)
     bin.write(-100, offset);
     increaseOffset(sizeof(int));
-    for (int i=0; i<numBuckets; i++) {
+    
+    for (BinaryFile::Offset i=0; i<numBuckets; i++) {
         bin.write(0, offset);
-        increaseOffset(sizeof(i));
+        increaseOffset(sizeof(BinaryFile::Offset));
     }
+    
     return 1;
 }
 
@@ -47,20 +63,24 @@ bool DiskMultiMap::insert(const std::string& key, const std::string& value, cons
     
     Node n(key.c_str(), value.c_str(), context.c_str());
     std::hash<std::string> str_hash; // creates a string hasher.
-    unsigned int hashValue = str_hash(n.key); // now hash the string.
+    unsigned int hashValue = str_hash(key); // now hash the string.
     unsigned int bucket = hashValue % NUM_BUCKETS;
     n.offNext=-1;
-    BinaryFile::Offset t;
-    bin.read(t, bucket+8);
+    //cerr<<"\n\n"<<bucket;
+    BinaryFile::Offset t,q;
+    bin.read(t, sizeof(BinaryFile::Offset)*bucket+8);
     
     //If no node has been inserted into bucket, write the offset of node that
-    //will be inserted into the bucket. (Bucket+4 because first 4 bytes contain NUM_BUCKETS)
+    //will be inserted into the bucket. (Bucket+8 because first 8 bytes contain header)
     if (t==0) {
-        bin.write(getOffset(), bucket+8);
+        q=getOffset();
+        bin.write(getOffset(),sizeof(BinaryFile::Offset)*bucket+8);
+        //cerr<<q<<endl;
     }
     //t!=0 implies that a node with that hash value is already stored at location 't'
     //So the offNext of that node has to be updated.
     else{
+        //cerr<<t<<endl;
         Node temp;
         do{
             bin.read(temp, t);
@@ -77,6 +97,7 @@ bool DiskMultiMap::insert(const std::string& key, const std::string& value, cons
     }
     bin.write(n, getOffset());
     increaseOffset(sizeof(n));
+    //Display();
     return true;
 }
 
@@ -87,7 +108,7 @@ DiskMultiMap::Iterator DiskMultiMap::search(const std::string& key){
     unsigned int bucket = hashValue % NUM_BUCKETS;
     BinaryFile::Offset t,o, p;
     Node temp;
-    bin.read(t, bucket+8);
+    bin.read(t, sizeof(BinaryFile::Offset)*bucket+8);
     o=t;
     p=t;
     if(t!=0) {
@@ -120,7 +141,7 @@ int DiskMultiMap::erase(const std::string& key, const std::string& value, const 
     Node temp;
     int count =0;
     BinaryFile::Offset t, o;
-    bin.read(t, bucket+8);
+    bin.read(t, sizeof(BinaryFile::Offset)*bucket+8);
     if (t==0)
         return 0;
     bin.read(temp, t);

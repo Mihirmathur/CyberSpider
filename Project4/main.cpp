@@ -14,30 +14,45 @@
 int main(){
 //        DiskMultiMap x;
 //        x.createNew("myhashtable.dat",100);
-//    x.insert("hmm.exe", "pfft.exe", "m52902");
-//    x.insert("http://www.foo.com/bar", "pfft.exe", "m52902");
-//    x.insert("http://www.foo.com/bar", "pfft.exe", "m10001");
-//    x.insert("hmm.exe", "pas.exe", "m10601");
-//    x.insert("blah.exe", "bletch.exe", "m0003");
-//    x.erase("hmm.exe", "pas.exe", "m10601");
-//    DiskMultiMap::Iterator it=x.search("http://www.foo.com/bar");
+//    x.insert( "http://www.foo.com/bar", "qqqqqa.exe", "m1");
+//    x.insert( "qqqqqa.exe", "qqqqqb.exe", "m1");
+//    x.insert( "qqqqqb.exe", "qqqqqc.exe", "m1");
+//    x.insert( "qqqqqb.exe", "http://www.bar.com/bletch", "m1");
+//    x.insert( "qqqqqd.exe", "http://www.bar.com/bletch", "m2");
+//    x.insert( "qqqqqd.exe", "qqqqqf.exe", "m2");
+//    x.insert( "qqqqqf.exe", "http://www.boo.edu/abc", "m2");
+//    x.insert( "http://www.boo.edu/abc", "qqqqqg.exe", "m3");
+//    x.insert( "qqqqqg.exe", "qqqqqh.exe", "m3");
+//    x.insert( "explorer.exe", "qqqqqa.exe", "m3");
+//    x.insert( "explorer.exe", "g1.exe", "m4");
+//    x.insert( "explorer.exe", "g2.exe", "m4");
+//    x.insert( "explorer.exe", "g3.exe", "m5");
+//    x.insert( "explorer.exe", "g4.exe", "m5");
+//    x.insert( "explorer.exe", "g5.exe", "m6");
+//    x.insert( "explorer.exe", "g6.exe", "m6");
+//    x.insert( "firefox.exe", "http://google.com", "m7");
+//    x.insert( "firefox.exe", "http://google.com", "m7");
+//    x.insert( "explorer.exe", "http://google.com", "m8");
+//    x.insert( "explorer.exe", "http://google.com", "m8");
+//    DiskMultiMap::Iterator it=x.search("explorer.exe");
 //    while(it.isValid()){
 //        MultiMapTuple m=*it;
 //        cout<<m.key<<" "<<m.value<<" "<<m.context<<" "<<endl;
 //        ++it;
 //    }
     
+    
     std::vector<std::string> indicators;
     unsigned int minPrevalenceToBeGood;
     std::vector<std::string> badEntitiesFound;
     std::vector<InteractionTuple> badInteractions;
-    indicators.push_back("a.exe");
-    indicators.push_back("www.rare-malicious-website.com");
+    //indicators.push_back("http://www.foo.com/bar");
+    indicators.push_back("oj.exe");
     
     IntelWeb i;
-    i.createNew("my", 5000); //Doesn't work for 1000 and foobar.
-    i.ingest("telemetry2.txt");
-    int k=i.crawl(indicators, 500, badEntitiesFound, badInteractions);
+    i.createNew("myo", 100); //Doesn't work for 1000 and foobar.
+    i.ingest("output.txt");
+    int k=i.crawl(indicators, 100, badEntitiesFound, badInteractions);
     cerr<<k<<endl;
     InteractionTuple tup;
     for (int i=0; i<badInteractions.size(); i++) {
@@ -47,5 +62,5 @@ int main(){
     for (int i=0; i<badEntitiesFound.size(); i++) {
         cerr<<badEntitiesFound[i]<<endl;
     }
-    
+  i.close();
 }

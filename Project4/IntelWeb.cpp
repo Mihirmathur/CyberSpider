@@ -234,3 +234,34 @@ unsigned int IntelWeb::crawl(
 
     return num_mal;
 }
+
+
+bool IntelWeb::purge(const std::string& entity){
+    DiskMultiMap::Iterator it;
+    it=m_diskMap.search(entity);
+    MultiMapTuple m;
+    
+    bool purged=false;
+    
+    while (it.isValid()) {
+        m=*it;
+        m_diskMap.erase(entity, m.value, m.context);
+        m_diskMap2.erase(m.value, entity, m.context);
+        ++it;
+        purged=true;
+    }
+    
+    it=m_diskMap2.search(entity);
+    
+    while (it.isValid()) {
+        m=*it;
+        m_diskMap2.erase(entity, m.value, m.context);
+        m_diskMap2.erase(m.value, entity, m.context);
+        ++it;
+        purged=true;
+    }
+    
+    return purged;
+    
+    
+}

@@ -110,6 +110,7 @@ private:
     BinaryFile::Offset offset; //Points to the end of file. Used for writing new things. 
     BinaryFile::Offset head_offset;//Points to the start of the nodes.
     Node N, M; // Nodes for working.
+    void Display();
     int NUM_BUCKETS;
 };
 
